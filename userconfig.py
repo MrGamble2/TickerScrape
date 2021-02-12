@@ -11,3 +11,4 @@ dbconfig = {
 	"password":"password",
 	"dbname":"TickerScrapeDb"
 }
+subreddits = ["wallstreetbets"]

@@ -9,7 +9,7 @@ def find_only_whole_word(search_string, input_string):
   # Create a raw string with word boundaries from the user's input_string
   raw_search_string = r"\b" + search_string + r"\b"
 
-  match_output = re.search(raw_search_string, input_string, flags=re.IGNORECASE)
+  match_output = re.search(raw_search_string, input_string) #, flags=re.IGNORECASE <--more effort than its worth
 
   no_match_was_found = ( match_output is None )
   if no_match_was_found:
@@ -38,7 +38,7 @@ for x in directory:
 			ticker_dict["score"].append(0)
 			line = fp.readline();
 	except:
-    	print("Unexpected error:", sys.exc_info()[0])
+		print("Unexpected error:", sys.exc_info()[0])
 	finally:
 		fp.close()
 

@@ -1,6 +1,6 @@
 #! python3
+#inital test for many concepts of praw and sorting. file will be deleted when split out eventually
 import praw
-#import pandas as pd
 import datetime as dt
 import userconfig as cfg
 import os, sys, re, itertools
@@ -27,7 +27,7 @@ post_dict = { "title":[], \
 ticker_dict = { "name":[], \
                 "symbol":[], \
                 "postmentions":[], \
-                "score"}            
+                "score":[]}            
 #start    
 print("start")
 reddit = praw.Reddit(client_id=cfg.redditconnection["clientid"], \
@@ -65,7 +65,7 @@ for x in directory:
 			ticker_dict["score"].append(0)
 			line = fp.readline();
 	except:
-    	print("Unexpected error:", sys.exc_info()[0])
+		print("Unexpected error:", sys.exc_info()[0])
 	finally:
 		fp.close()
 

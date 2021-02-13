@@ -19,7 +19,8 @@ dbconnection = mysql.connector.connect(
   host=cfg.dbconfig["host"],
   user=cfg.dbconfig["user"],
   password=cfg.dbconfig["password"],
-  database=cfg.dbconfig["dbname"]
+  database=cfg.dbconfig["dbname"],
+  autocommit=True
 )
 dbcursor = dbconnection.cursor()
 #do we need every instance? Keep relationship simple (maybe have a calculated rollup field of amount?)
@@ -43,9 +44,13 @@ for x in directory:
 		fp = open(path,'r')
 		line = fp.readline()
 		while line:
-			values = line.split("\t")
+			values = line.rstrip().split("\t")
 			sql = "INSERT INTO tickers (ticker, full_name) VALUES (%s, %s)"
-			dbcursor.execute(sql,values)
+			try:
+				dbcursor.execute(sql,values)
+			except:
+				print("error adding values ikely an issue with duplicate rows:" )
+				print(values)
 			line = fp.readline();
 	except:
 		print("Unexpected file error:", sys.exc_info()[0])

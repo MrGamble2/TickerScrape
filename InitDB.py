@@ -2,7 +2,6 @@
 import userconfig as cfg
 import mysql.connector
 import os, sys, re, itertools
-cfg.redditconnection["clientid"]
 
 dbconnection = mysql.connector.connect(
   host=cfg.dbconfig["host"],
@@ -33,7 +32,7 @@ dbcursor.execute("CREATE TABLE subreddits (name VARCHAR(255) NOT NULL, post_coun
 #then have a N:1 but thats cause then I could have subgrid. Eh if I integrate with something in the future
 #I can always make db updates by adding in the table + key then add a key column to the current mention
 dbcursor.execute("CREATE TABLE tickermention (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, \
-	ticker_name VARCHAR(255), sub_name VARCHAR(255), createdon Datetime)")
+	ticker_name VARCHAR(255), sub_name VARCHAR(255), createdon Datetime, url VARCHAR(255), reddit_id VARCHAR(255))")
 
 #fill tickers and subs
 directory = os.listdir('Exchanges')

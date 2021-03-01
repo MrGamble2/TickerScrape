@@ -46,12 +46,10 @@ reddit = praw.Reddit(client_id=cfg.redditconnection["clientid"], \
                      user_agent=cfg.redditconnection["useragent"], \
                      username=cfg.redditconnection["username"], \
                      password=cfg.redditconnection["password"])
-#for sub_name in cfg.subreddits:  subreddit = reddit.subreddit("AskReddit")
-#for submission in subreddit.stream.submissions()
-#	sub = reddit.subreddit(sub_name)
-#for submission in reddit.subreddit()
+#Watch submissions
 subreddit = reddit.subreddit("wallstreetbets")
 for submission in subreddit.stream.submissions():
+	added = False
 	for j in range(len(ticker_dict["symbol"])):
 		if len(ticker_dict["symbol"][j])>1:
 			if (find_only_whole_word(ticker_dict["symbol"][j], submission.title) 
@@ -60,16 +58,26 @@ for submission in subreddit.stream.submissions():
 			or find_only_whole_word("$"+ticker_dict["symbol"][j], submission.selftext)
 			or find_only_whole_word(ticker_dict["name"][j], submission.title)
 			or find_only_whole_word(ticker_dict["name"][j], submission.selftext)):
-				values = (ticker_dict["symbol"][j], "wallstreetbets", datetime.datetime.fromtimestamp(submission.created))
-				sql = "INSERT INTO tickermention (ticker_name, sub_name, createdon) VALUES (%s, %s, %s)"
+				if not added:
+					values = (submission.id, "wallstreetbets", datetime.datetime.fromtimestamp(submission.created), submission.url, submission.score)
+					sql = "INSERT INTO post (reddit_id, sub_name, postdate, url, score) VALUES (%s, %s, %s, %s, %s)"
+					dbcursor.execute(sql,values)
+				values = (ticker_dict["symbol"][j], submission.id)
+				sql = "INSERT INTO tickermention (ticker_name, reddit_id) VALUES (%s, %s)"
 				dbcursor.execute(sql,values)
+				added = True
 				print(values)
 		else:
 			if (find_only_whole_word("$"+ticker_dict["symbol"][j], submission.title)
 			or find_only_whole_word("$"+ticker_dict["symbol"][j], submission.selftext)
 			or find_only_whole_word(ticker_dict["name"][j], submission.title)
 			or find_only_whole_word(ticker_dict["name"][j], submission.selftext)):
-				values = (ticker_dict["symbol"][j], "wallstreetbets", datetime.datetime.fromtimestamp(submission.created))
-				sql = "INSERT INTO tickermention (ticker_name, sub_name, createdon) VALUES (%s, %s, %s)"
+				if not added:
+					values = (submission.id, "wallstreetbets", datetime.datetime.fromtimestamp(submission.created), submission.url, submission.score)
+					sql = "INSERT INTO post (reddit_id, sub_name, postdate, url, score) VALUES (%s, %s, %s, %s, %s)"
+					dbcursor.execute(sql,values)
+				values = (ticker_dict["symbol"][j], submission.id)
+				sql = "INSERT INTO tickermention (ticker_name, reddit_id) VALUES (%s, %s)"
 				dbcursor.execute(sql,values)
+				added = True
 				print(values)

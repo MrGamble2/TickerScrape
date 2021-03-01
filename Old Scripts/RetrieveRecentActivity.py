@@ -29,7 +29,6 @@ ticker_dict = { "name":[], \
                 "postmentions":[], \
                 "score":[]}            
 #start    
-print("start")
 reddit = praw.Reddit(client_id=cfg.redditconnection["clientid"], \
                      client_secret=cfg.redditconnection["clientsecret"], \
                      user_agent=cfg.redditconnection["useragent"], \
